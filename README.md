@@ -2,7 +2,7 @@
 
 ## Scenario
 
-Welcome to Cisco Live! In this DevNet workshop we will be covering how to automate the collection of inventory information utilizing Cisco Network Services Orchestator and Python3. While NSO is a key component in this lab many of these task can also be performed utilizing other Cisco technologies such as DNA Center. The main goals of this lab are to demonstrate how to:
+Welcome to Cisco Live! In this DevNet workshop we will be covering how to automate the collection of inventory information utilizing Cisco Network Services Orchestator and Python3. While NSO is a key component in this lab many of these tasks can also be performed utilizing other Cisco technologies such as DNA Center. The main goals of this lab are to demonstrate how to:
 
 - make REST calls to controllers (NSO in this case).
 - parse and utilize the data you receive.
@@ -15,7 +15,7 @@ If you are taking this lab at CLUS 2022 you should be provided a workstation. Th
 
 In this lab we try not to make any assumptions about your level of experience with any of the various components (Linux, vscode, Python, etc). For this reason the instructions are detailed. 
 
-Throughout the lab guide there will be images of Linux terminals. In some instances your machine name, or user name may not match what is in the image. As long as you are in the correct directory this should cause you no issues. 
+Throughout the lab guide there will be images of Linux terminals. In some instances your machine name, or username may not match what is in the image. As long as you are in the correct directory this should cause you no issues. 
 
 ## Network Diagram/Lab Environment:
 
@@ -65,7 +65,7 @@ Now that you are in the lab directory we can open our IDE (vscode). To do this i
 
 If you are prompted to trust the authors of the file click **Yes**.
 
-Note: `code` is the command to open vscode and `.` is a refrence to the present working directory. 
+Note: `code` is the command to open vscode and `.` is a reference to the present working directory. 
 
 vscode should open on your desktop and you should see a screen similar to this:
 
@@ -130,7 +130,7 @@ At the top of **main.py** you will notice several `import` statements.
 
 Each of these statements is giving our program access to code that resides in other Python libraries. This is a very small collection of libraries that will allow our program to operate. We didn't have to implement any of this functionality and can simply utilize the API available to interact with the code. Python has a very large collection of libraries to do all sorts of things. So what do our imported libraries do?:
 
-- requests - allows you to send HTTP/HTTPS request in a simple elegant manner
+- requests - allows you to send HTTP/HTTPS requests in a simple elegant manner
 - urllib3 - requests is built on-top of urllib3, we need to import it to suppress HTTPS warnings
 - json - a json encoder and decoder
 - pandas - a data analysis tool, we will use it to build data frames
@@ -149,7 +149,7 @@ Next you will see a comment labeled `Code specific requirements`. There are two 
 Here is what those statements do:
 
 - `urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)` - since we are using self-signed certificates on NSO the request library will complain about an insecure connection. This line disables that warning. 
-- `load_dotenv(find_dotenv())` - consists of two function calls. The outer call `load_dotenv()` takes as an argument the location of a **.env** file (remember we made that earlier) and makes the variables in that file available to the program. Conveniently, `find_dotenv()` will locate the **.env** file by looking in the present working directory.  
+- `load_dotenv(find_dotenv())` - consists of two function calls. The outer call `load_dotenv()` takes the location of a **.env** file (remember we made that earlier) as an argument and makes the variables in that file available to the program. Conveniently, `find_dotenv()` will locate the **.env** file by looking in the present working directory.  
 
 ### STEP 3: Global Varibles Accessed By python-dotenv()
 
@@ -218,9 +218,9 @@ The `if __name__ == '__main__':` statement basically allows our code to either b
 
 ### STEP 6: Run the program
 
-For now let's run our program for the first time. With the **main.py** file open push the play button in the top right corner of vscode. 
+For now let's run our program for the first time. With the **main.py** file open, push the play button in the top right corner of vscode. 
 
-You'll notice that the program does nothing. This is because the only statement within `main`, that is not commented out, is `pass`. `pass` is a NULL statement meaing that it does nothing. Let's move on to something more relevant. 
+You'll notice that the program does nothing. This is because the only statement within `main` that is not commented out is `pass`. `pass` is a NULL statement meaing that it does nothing. Let's move on to something more relevant. 
 
 --- 
 
@@ -285,7 +285,7 @@ Assuming that the request is successful (we have a response code of 200) we can 
     print(json.dumps(data, indent=4))
 ```
 
-Stored within the request object is an attribute called `text`. This attribute is simply the payload of the requests object. In our scenario the `text` attribute is formatted as a JSON string. We could print the string and see what is in it, but we cannot index into the payload in any meaningful way. So in the first line of this code block takes the text of the request object and returns it in JSON (this makes it iterable). We assign that dictionary to the variable `data`. 
+Stored within the request object is an attribute called `text`. This attribute is simply the payload of the requests object. In our scenario the `text` attribute is formatted as a JSON string. We could print the string and see what is in it, but we cannot index into the payload in any meaningful way. So the first line of this code block takes the text of the request object and returns it in JSON (this makes it iterable). We assign that dictionary to the variable `data`. 
 
 The next line is a print statement that takes our `data` variable and prints it as a JSON string with some formatting to make it easier to read. 
 
@@ -315,7 +315,7 @@ This output means that we can successfully reach and authenticate to our NSO ins
 
 ### STEP 1: Explore the get_device_groups() function
 
-Now that we verified our access to the NSO RestConf API we can begin gathering more useful information. One of the convenient features of Cisco NSO is the ability to create device groups. Devices can be group in any manner that suits your orgainization i.e. by vendor, model, operating system, role, etc. Groups can also contain other groups. The purpose of the `get_device_groups()` function is to retreive information about the groups (and their members) that are configured on NSO. 
+Now that we verified our access to the NSO RestConf API we can begin gathering more useful information. One of the convenient features of Cisco NSO is the ability to create device groups. Devices can be grouped in any manner that suits your orgainization i.e. by vendor, model, operating system, role, etc. Groups can also contain other groups. The purpose of the `get_device_groups()` function is to retreive information about the groups (and their members) that are configured on NSO. 
 
 ```
     ## Retrieves the device groups configured on NSO
@@ -345,7 +345,7 @@ Now that we verified our access to the NSO RestConf API we can begin gathering m
 
 ### STEP 2: Retreive all device group information
 
-Notice that the much of the function is currently commented out. As the function is currently coded it will make a get request to the path: `http://path_to_nso.com/restconf/data/tailf-ncs:devices/device-group`. The function then prints the return payload in the same way as the previous function. Go to the `main()` function and ensure that the `get_device_groups()` function is the only one that active and run the program. 
+Notice that much of the function is currently commented out. As the function is currently coded it will make a get request to the path: `http://path_to_nso.com/restconf/data/tailf-ncs:devices/device-group`. The function then prints the return payload in the same way as the previous function. Go to the `main()` function and ensure that the `get_device_groups()` function is the only one that is active and runs the program. 
 
 You can see that the function call returns a sizeable amount of information. Let's look at the structure of the return.
 
@@ -410,7 +410,7 @@ Note: Your list may not contain the same groups or members. In this example we a
 
 ### STEP 4: Modify the URL to return only the **ALL** group and add the devices to the **DEVICES** list
 
-Take a look at the NSO RestConf api documentation here (also listed in the references section): 
+Take a look at the NSO RestConf API documentation here (also listed in the references section): 
 
 https://developer.cisco.com/docs/nso/#!cisco-nso-restconf-swagger-api-docs-overview
 
@@ -635,7 +635,7 @@ We call this function from `main()` with this line of code:
     device_df = create_data_frame(PLATFORM_DETAILS, DEVICES)
 ```
 
-This line creates a data frame called `device_df` by calling `create_data_frame()`. The function returns the data frame to the calling function (in this case the main()). If we print our data frame this its structure will be similar to this:
+This line creates a data frame called `device_df` by calling `create_data_frame()`. The function returns the data frame to the calling function (in this case the main()). If we print our data frame its structure will be similar to this:
 
 ```
                          OS Type          Version                           Model           Serial
@@ -649,7 +649,7 @@ edge-firewall01              asa          9.12(2)                            ASA
 internet-rtr01            ios-xe         16.11.1b                        CSR1000V      929MFXYBMRP
 ```
 
-Go into the the main() function and uncomment the call to this function (i.e. make the function active).
+Go into the main() function and uncomment the call to this function (i.e. make the function active).
 
 ### STEP 2: Writing the inventory to an .xlsx file
 
@@ -659,7 +659,7 @@ You may notice that the Pandas data frame has a structure similar to a spreadshe
     device_df.to_excel('./inventory.xlsx')
 ```
 
-Go into the the main() function and uncomment the call to this functio (i.e. make the function active).
+Go into the main() function and uncomment the call to this function (i.e. make the function active).
 
 You should see a new file **inventory.xlsx** appear in the working directory. You can open this file to view its contents by utilizing the file navigator on the desktop. 
 
@@ -701,7 +701,7 @@ Another task that we could automate is gathering IP information from the devices
                 continue
 ```
 
-First let's take a look at the **for** loop. We can see that we are iterating through the `DEVICES` list (remember this holds the name of each device onboarded to NSO). THe `index` variable is assigned to the return value of `DEVICES.index(device)`. For instance if core-rtr-01 is the third element in the `DEVICES` list than the `index` variable will be 2 (remember to start counting from 0). 
+First let's take a look at the **for** loop. We can see that we are iterating through the `DEVICES` list (remember this holds the name of each device onboarded to NSO). The `index` variable is assigned to the return value of `DEVICES.index(device)`. For instance if core-rtr-01 is the third element in the `DEVICES` list, then the `index` variable will be 2 (remember to start counting from 0). 
 
 We can now use this `index` to check the status of the router in our `PLATFORM_DETAILS` dictionary. Our **if** statement tests whether we have vaild information in the `PLATFORM_DETAILS['OS Type']` list. If the string **Error Code:** is NOT in the element then the information should be vaild.
 ## References
